@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>I love you, Lana</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .heart-container {
+      position: relative;
+      width: 800px; 
+      height: 800px;
+    }
+
+    .text-element {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      color: #a11a9a;
+      font-size: 14px; /* Чуть уменьшил шрифт, чтобы 150 фраз не перекрывали друг друга слишком сильно */
+      font-weight: bold;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      
+      /* Анимация: движение и мерцание */
+      animation: 
+        float 6s ease-in-out infinite,
+        pulseGlow 4s linear infinite;
+    }
+
+    /* Плавное движение каждой надписи */
+    @keyframes float {
+      0%, 100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))); }
+      25% { transform: translate(calc(-50% + var(--x) + 5px), calc(-50% + var(--y) - 5px)); }
+      50% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) - 10px)); }
+      75% { transform: translate(calc(-50% + var(--x) - 5px), calc(-50% + var(--y) - 5px)); }
+    }
+
+    /* Эффект переливающегося градиента */
+    @keyframes pulseGlow {
+      0%, 100% { 
+        opacity: 0.1; 
+        text-shadow: none; 
+      }
+      50% { 
+        opacity: 1; 
+        text-shadow: 0 0 10px #a11a9a, 0 0 20px #a11a9a; 
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart-container" id="heart"></div>
+
+  <script>
+    const container = document.getElementById('heart');
+    const text = "I love you, Lana";
+    
+    // Увеличено количество надписей для плотности
+    const totalElements = 150; 
+
+    function getHeartPoint(t) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+      const scale = 20; 
+      return { x: x * scale, y: -y * scale };
+    }
+
+    for (let i = 0; i < totalElements; i++) {
+      const span = document.createElement('span');
+      span.className = 'text-element';
+      span.innerText = text;
+
+      const t = (i / totalElements) * 2 * Math.PI;
+      const point = getHeartPoint(t);
+
+      span.style.setProperty('--x', `${point.x}px`);
+      span.style.setProperty('--y', `${point.y}px`);
+
+      // Задержка анимации создает эффект "бегущей волны" света по контуру
+      const delay = (i / totalElements) * -4;
+      span.style.animationDelay = `${(i / totalElements) * -6}s, ${delay}s`;
+
+      container.appendChild(span);
+    }
+  </script>
+</body>
+</html>

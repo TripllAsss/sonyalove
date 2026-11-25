@@ -1,2 +1,2 @@
-# lanalove
-LANA I LOVE YOU
+# slove
+SONYA I LOVE YOU
